@@ -1,5 +1,5 @@
 name: notification_hub
-description: "A new Flutter package project."
+description: "An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center."
 version: 0.0.1
 homepage:
 
