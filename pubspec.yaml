@@ -1,7 +1,7 @@
 name: notification_hub
 description: "An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Abdullah8888/notification_hub
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
