@@ -51,7 +51,7 @@ onError: (error) {
 ```
 Here's a breakdown of each part:
 
-`NotificationHub.instance`: This suggests that there is a singleton instance of a NotificationHub class. The instance is a common pattern used for creating a single, shared instance of a class.
+`NotificationHub.instance: This suggests that there is a singleton instance of a NotificationHub class. The instance is a common pattern used for creating a single, shared instance of a class.`
 
 `addSubscriber`: This method is likely used to subscribe an object (in this case, the current object, represented by `this`) to a specific notification channel.
 
