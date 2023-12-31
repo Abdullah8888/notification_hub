@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:notification_hub/notification_hub.dart';
 
+import 'mock_notification_hub.dart';
+
 late String notificationName;
 late TestWidgetA obj;
 late StreamController controller;
@@ -19,16 +21,17 @@ void main() {
     });
 
     tearDown(() {
-      NotificationHub.instance.removeSubscriber(object: obj);
-      NotificationHub.instance.close();
+      MockNotificationHub.instance.removeSubscriber(object: obj);
+      MockNotificationHub.instance.close();
     });
 
     test('Test should return true if object has been stored', () async {
-      NotificationHub.instance.storeObject(notificationName, obj, subscriber);
-      final isObjectStored = NotificationHub.instance
+      MockNotificationHub.instance
+          .storeObject(notificationName, obj, subscriber);
+      final isObjectStored = MockNotificationHub.instance
           .isObjectStored(channelName: notificationName, obj: obj);
 
-      final doesChannelExist = NotificationHub.instance
+      final doesChannelExist = MockNotificationHub.instance
           .isChannelExist(channelName: notificationName);
       expect(isObjectStored, true);
       expect(doesChannelExist, true);

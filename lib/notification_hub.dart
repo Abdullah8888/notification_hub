@@ -14,15 +14,29 @@ class NotificationHub {
 
   final StreamController _controller = StreamController.broadcast();
 
-  //late StreamSubscription subscriber;
-
-  Map<int, StreamSubscription> _streamSubscriberWithID = {};
+  Map<int, StreamSubscription> _subscriberWithID = {};
 
   Map<String, Map<int, StreamSubscription>>
-      _streamSubscribersGroupedByNotificationName = {};
+      _subscribersGroupedByNotificationChannel = {};
 
-  String currentNotificatonName = '';
+  String currentNotificatonChannel = '';
 
+  /// This will be used only in unit test.
+  factory NotificationHub.newInstance() {
+    return NotificationHub._();
+  }
+
+  /// `addSubscriber` is used to map an object id to a streamSubscription then
+  /// map the result to a notification channel.
+  /// final notificaionChannel = 'Greetings';
+  /// ```dart
+  ///  NotificationHub.instance.addSubscriber(this, notificationChannel: notificaionChannel,
+  ///     onData: (event) {
+  ///   print("event is $event");
+  /// }, onDone: (message) {
+  ///   print("$message");
+  /// });
+  /// ```
   void addSubscriber(Object obj,
       {required String notificationName,
       void Function(dynamic)? onData,
@@ -32,17 +46,17 @@ class NotificationHub {
     //StreamSubscription subscriber;
     StreamSubscription subscriber = _controller.stream.listen(
       (event) {
-        if (currentNotificatonName == notificationName) {
+        if (currentNotificatonChannel == notificationName) {
           onData!(event);
         }
       },
       onDone: () {
-        if (currentNotificatonName == notificationName) {
+        if (currentNotificatonChannel == notificationName) {
           onDone!(" ${obj.hashCode} subscriber successfully removed");
         }
       },
       onError: (error) {
-        if (currentNotificatonName == notificationName) {
+        if (currentNotificatonChannel == notificationName) {
           onError!(error);
         }
       },
@@ -53,35 +67,34 @@ class NotificationHub {
 
   void storeObject(
       String notificationName, Object obj, StreamSubscription subscriber) {
-    if (_streamSubscribersGroupedByNotificationName
+    if (_subscribersGroupedByNotificationChannel
         .containsKey(notificationName)) {
       Map<int, StreamSubscription> streamSubscriberWithID =
-          _streamSubscribersGroupedByNotificationName[notificationName]!;
+          _subscribersGroupedByNotificationChannel[notificationName]!;
       streamSubscriberWithID = {
         ...streamSubscriberWithID,
         ...{obj.hashCode: subscriber}
       };
-      _streamSubscribersGroupedByNotificationName = {
-        ..._streamSubscribersGroupedByNotificationName,
+      _subscribersGroupedByNotificationChannel = {
+        ..._subscribersGroupedByNotificationChannel,
         ...{notificationName: streamSubscriberWithID}
       };
     } else {
-      _streamSubscriberWithID = {};
-      _streamSubscriberWithID = {
-        ..._streamSubscriberWithID,
+      _subscriberWithID = {};
+      _subscriberWithID = {
+        ..._subscriberWithID,
         ...{obj.hashCode: subscriber}
       };
 
-      _streamSubscribersGroupedByNotificationName = {
-        ..._streamSubscribersGroupedByNotificationName,
-        ...{notificationName: _streamSubscriberWithID}
+      _subscribersGroupedByNotificationChannel = {
+        ..._subscribersGroupedByNotificationChannel,
+        ...{notificationName: _subscriberWithID}
       };
     }
   }
 
   bool isObjectStored({required String channelName, required Object obj}) {
-    if (_streamSubscribersGroupedByNotificationName[channelName]
-            ?[obj.hashCode] !=
+    if (_subscribersGroupedByNotificationChannel[channelName]?[obj.hashCode] !=
         null) {
       return true;
     }
@@ -89,27 +102,25 @@ class NotificationHub {
   }
 
   bool isChannelExist({required String channelName}) {
-    if (_streamSubscribersGroupedByNotificationName[channelName] != null) {
+    if (_subscribersGroupedByNotificationChannel[channelName] != null) {
       return true;
     }
     return false;
   }
 
-  void printAllSubscribers() {
-    //print("subscriers are $_streamSubscribersGroupedByNotificationName");
-  }
+  void printAllSubscribers() {}
 
-  void post({required String notificationName, dynamic data}) {
-    currentNotificatonName = notificationName;
+  void post({required String notificatonChannel, dynamic data}) {
+    currentNotificatonChannel = notificatonChannel;
     _controller.add(data);
   }
 
   void removeChannelName(
       {required String notificationName, required Object object}) {
     final subscribers =
-        _streamSubscribersGroupedByNotificationName[notificationName];
+        _subscribersGroupedByNotificationChannel[notificationName];
     if (subscribers == null || subscribers.isEmpty) {
-      _streamSubscribersGroupedByNotificationName.remove(notificationName);
+      _subscribersGroupedByNotificationChannel.remove(notificationName);
     } else {
       final subscriber = subscribers.remove(object.hashCode);
       subscriber?.cancel();
@@ -118,11 +129,9 @@ class NotificationHub {
 
   void removeSubscriber({required Object object}) {
     List<StreamSubscription> subscribersToBeRemove = [];
-    for (int i = 0;
-        i < _streamSubscribersGroupedByNotificationName.length;
-        i++) {
+    for (int i = 0; i < _subscribersGroupedByNotificationChannel.length; i++) {
       final subscribers =
-          _streamSubscribersGroupedByNotificationName.values.toList()[i];
+          _subscribersGroupedByNotificationChannel.values.toList()[i];
       if (subscribers.containsKey(object.hashCode)) {
         final subscriber = subscribers.remove(object.hashCode);
         subscribersToBeRemove.add(subscriber!);
