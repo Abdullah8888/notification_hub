@@ -53,7 +53,6 @@ class NotificationHub {
 
   void storeObject(
       String notificationName, Object obj, StreamSubscription subscriber) {
-    print('lolo 1is ${obj.hashCode}');
     if (_streamSubscribersGroupedByNotificationName
         .containsKey(notificationName)) {
       Map<int, StreamSubscription> streamSubscriberWithID =
@@ -81,7 +80,6 @@ class NotificationHub {
   }
 
   bool isObjectStored({required String channelName, required Object obj}) {
-    print('lolo is ${obj.hashCode}');
     if (_streamSubscribersGroupedByNotificationName[channelName]
             ?[obj.hashCode] !=
         null) {
@@ -98,7 +96,7 @@ class NotificationHub {
   }
 
   void printAllSubscribers() {
-    print("subscriers are $_streamSubscribersGroupedByNotificationName");
+    //print("subscriers are $_streamSubscribersGroupedByNotificationName");
   }
 
   void post({required String notificationName, dynamic data}) {
