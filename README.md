@@ -65,12 +65,12 @@ Here's a breakdown of each part:
 
 Unsubscribe by caling `removeSubscriber`. You can also unsubscribe from a specified notification channel, assuming the object or widget has subscribed to more than one notification channels.
 
-# Unsubscribe from All notification channels
+### Unsubscribe from All notification channels
 ```dart
 NotificationHub.instance.removeSubscriber(object: this);
 ```
 
-# Unsubscribe from a specified notification channel
+### Unsubscribe from a specified notification channel
 ```dart
 NotificationHub.instance.removeSubscriber(object: this, notificationChannel: 'Greetings');
 ```
