@@ -70,7 +70,7 @@ Unsubscribe by caling `removeSubscriber`. You can also unsubscribe from a specif
 NotificationHub.instance.removeSubscriber(object: this);
 ```
 
-### Unsubscribe from a specified notification channel
+<h4> Unsubscribe from a specified notification channel </h4>
 ```dart
 NotificationHub.instance.removeSubscriber(object: this, notificationChannel: 'Greetings');
 ```
