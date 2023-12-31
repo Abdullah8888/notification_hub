@@ -28,3 +28,25 @@ dependencies:
   ...
   notification_hub: ^0.0.1
 
+
+# Usage example
+
+For a detailed usage example, check the example folder.
+
+## Subscribe Observer
+
+Subscribe to a channel 'Gretings' then listen to events. Here Greetings is the channel name
+
+```dart
+NotificationHub.instance.addSubscriber(this, channelName: 'Gretings', 
+onData: (event) {
+    print("$event");
+}, 
+onDone: (message) {
+    print("$message");
+}, 
+onError: (error) {
+    print(error.toString());
+});
+
+
