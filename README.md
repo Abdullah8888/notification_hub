@@ -51,17 +51,17 @@ onError: (error) {
 ```
 Here's a breakdown of each part:
 
-NotificationHub.instance: This suggests that there is a singleton instance of a NotificationHub class. The instance is a common pattern used for creating a single, shared instance of a class.
+`NotificationHub.instance`: This suggests that there is a singleton instance of a NotificationHub class. The instance is a common pattern used for creating a single, shared instance of a class.
 
-addSubscriber: This method is likely used to subscribe an object (in this case, the current object, represented by this) to a specific notification channel.
+`addSubscriber`: This method is likely used to subscribe an object (in this case, the current object, represented by `this`) to a specific notification channel.
 
-this: Refers to the current instance of the class where this code is located. It implies that the current object is subscribing to the notifications on the 'Greetings' channel.
+`this`: Refers to the current instance of the class where this code is located. It implies that the current object is subscribing to the notifications on the 'Greetings' channel.
 
-channelName: 'Greetings': Specifies the name of the channel to which the object is subscribing. In this case, it's 'Greetings'.
+`notificationChannel`: **'Greetings'** Specifies the name of the notification channel to which the object is subscribing. In this case, it's **'Greetings'**.
 
-onData: This is a callback function that will be executed when new data is received on the 'Greetings' channel. The event parameter represents the data received, and it is printed to the console using print("$event").
+`onData`: This is a callback function that will be executed when new data is received on the 'Greetings' channel. The `event` parameter represents the data received.
 
-onDone: This is a callback function that will be executed when the subscription is completed successfully. The message parameter represents any message related to the completion, and it is printed to the console using print("$message").
+`onDone`: This is a callback function that will be executed when the subscription is completed successfully. The `message` parameter represents any message related to the completion.
 
-onError: This is a callback function that will be executed if an error occurs during the subscription. The error parameter represents the error object, and it is printed to the console using print(error.toString()).
+`onError`: This is a callback function that will be executed if an error occurs during the subscription. The `error` parameter represents the error object.
 
