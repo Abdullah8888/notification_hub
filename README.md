@@ -14,3 +14,11 @@ and the Flutter guide for
 # notification_center
 
 An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center.
+
+## Getting Started
+notification_hub is available through [pub.dev](https://pub.dev/).
+
+Add the dependency to your pubspec.yaml:
+
+dependencies:
+  notification_hub: 0.0.1
