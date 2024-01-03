@@ -11,7 +11,7 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-# notification_center
+# notification_hub
 
 An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center.
 
@@ -26,12 +26,12 @@ To use `notification_hub` in your Flutter project, add the following dependency 
 ```yaml
 dependencies:
   ...
-  notification_hub: ^0.0.1
+  notification_hub: ^0.0.3
 ```
 
 # Usage example
 
-For a detailed usage example, check the example folder.
+For a detailed usage example, check the [example folder](https://github.com/Abdullah8888/notification_hub/tree/main/example).
 
 ## Subscribe Observer (Subscribe to a single notification channel)
 
@@ -108,6 +108,6 @@ NotificationHub.instance.removeSubscriber(object: this, notificationChannel: 'Gr
 ## Post notification
 
 ```dart
-NotificationHub.instance.post(notificationName:'Greetings', data: 'Hello');
+NotificationHub.instance.post(notificationChannel:'Greetings', data: 'Hello');
 ```
 

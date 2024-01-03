@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:notification_hub/notification_hub.dart';
 
 class MockNotificationHub {
-  // final NotificationHub notificationHub;
-  // const MockNotificationHub({required this.notificationHub});
   MockNotificationHub._();
 
   static MockNotificationHub? _instance;
