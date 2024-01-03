@@ -73,6 +73,7 @@ onDone: (message) {
 onError: (error) {
     print(error.toString());
 });
+```
 
 ```dart
 NotificationHub.instance.addSubscriber(this, notificationChannel: 'Afternoon', 
@@ -85,6 +86,7 @@ onDone: (message) {
 onError: (error) {
     print(error.toString());
 });
+```
 
 ## Unsubscribe 
 
