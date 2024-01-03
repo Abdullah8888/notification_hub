@@ -1,3 +1,10 @@
+import 'package:example/post_btns.dart/post_btn_one.dart';
+import 'package:example/post_btns.dart/post_btn_three.dart';
+import 'package:example/post_btns.dart/post_btn_two.dart';
+import 'package:example/widget_a.dart';
+import 'package:example/widget_b.dart';
+import 'package:example/widget_c.dart';
+import 'package:example/widget_d.dart';
 import 'package:flutter/material.dart';
 import 'package:notification_hub/notification_hub.dart';
 
@@ -14,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -32,22 +39,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    NotificationHub.instance.addSubscriber(this, notificationName: "NotiTwo",
+    NotificationHub.instance.addSubscriber(this, notificationName: "channelOne",
         onData: (event) {
       print("event is $event");
     }, onDone: (message) {
       print("$message");
+    }, onError: (error) {
+      print("$error");
     });
   }
 
@@ -64,24 +65,43 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: const Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 50),
+          child: Column(
+            children: <Widget>[
+              WidgetA(),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                  width: 150.0, // Set your desired width
+                  height: 60.0,
+                  child: WidgetB()),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                  width: 150.0, // Set your desired width
+                  height: 60.0,
+                  child: WidgetC()),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                  width: 150.0, // Set your desired width
+                  height: 60.0,
+                  child: WidgetD()),
+              SizedBox(
+                height: 150,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [PostButtonOne(), PostButtonTwo(), PostButtonThree()],
+              )
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
