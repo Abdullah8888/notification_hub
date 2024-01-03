@@ -15,6 +15,9 @@ and the Flutter guide for
 
 An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center.
 
+# Video demo showcasing its usage.
+<img src="https://github.com/Abdullah8888/MovieTitles/blob/main/MovieTitle/Resources/sample_image.png" alt="drawing" style="width:250px;height:500px;"/>
+
 # Getting Started
 
 `notification_hub` is available through [pub.dev](https://pub.dev).
