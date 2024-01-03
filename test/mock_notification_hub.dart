@@ -33,17 +33,14 @@ class MockNotificationHub {
 
   void storeObject(
       String notificationName, Object obj, StreamSubscription subscriber) {
-    print("lal is ${notificationHub.hashCode}");
     notificationHub.storeObject(notificationName, obj, subscriber);
   }
 
   bool isObjectStored({required String channelName, required Object obj}) {
-    print("lal2 is ${notificationHub.hashCode}");
     return notificationHub.isObjectStored(channelName: channelName, obj: obj);
   }
 
-  bool isChannelExist({required String channelName}) {
-    print("lal3 is ${notificationHub.hashCode}");
+  bool doesChannelExist({required String channelName}) {
     return notificationHub.doesChannelExist(channelName: channelName);
   }
 
@@ -67,6 +64,5 @@ class MockNotificationHub {
 
   void close() {
     notificationHub.close();
-    print("lal4 is ${notificationHub.hashCode}");
   }
 }

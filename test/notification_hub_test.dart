@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:notification_hub/notification_hub.dart';
-
 import 'mock_notification_hub.dart';
 
 late String notificationName;
@@ -32,7 +29,7 @@ void main() {
           .isObjectStored(channelName: notificationName, obj: obj);
 
       final doesChannelExist = MockNotificationHub.instance
-          .isChannelExist(channelName: notificationName);
+          .doesChannelExist(channelName: notificationName);
       expect(isObjectStored, true);
       expect(doesChannelExist, true);
     });
