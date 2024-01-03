@@ -17,7 +17,7 @@ class _WidgetBState extends State<WidgetB> {
     NotificationHub.instance.addSubscriber(this, notificationName: "Insects",
         onData: (event) {
       setState(() {
-        textContent = 'Widget B -> Bees';
+        textContent = 'Widget B -> $event';
       });
     }, onDone: (message) {
       debugPrint("$message");

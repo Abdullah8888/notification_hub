@@ -17,7 +17,7 @@ class _WidgetDState extends State<WidgetD> {
     NotificationHub.instance.addSubscriber(this, notificationName: "Mammals",
         onData: (event) {
       setState(() {
-        textContent = 'Widget D -> Dog';
+        textContent = 'Widget D -> $event';
       });
     }, onDone: (message) {
       debugPrint("$message");
@@ -28,7 +28,7 @@ class _WidgetDState extends State<WidgetD> {
     NotificationHub.instance.addSubscriber(this, notificationName: "Birds",
         onData: (event) {
       setState(() {
-        textContent = 'Widget D -> Owl';
+        textContent = 'Widget D -> $event';
       });
     }, onDone: (message) {
       debugPrint("$message");
