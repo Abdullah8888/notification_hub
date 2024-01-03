@@ -17,7 +17,9 @@ An event broadcasting mechanism designed for dispatching notifications to regist
 
 # Video demo showcasing its usage.
 
-<img src="https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_video.gif" alt="drawing" style="width:250px;height:500px;"/>
+<img src="https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_video.gif" alt="Video Demo"  width="250" height="500"/>
+
+![Video Demo](https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_video.gif)
 
 # Getting Started
 
