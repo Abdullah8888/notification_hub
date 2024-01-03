@@ -33,7 +33,7 @@ dependencies:
 
 For a detailed usage example, check the example folder.
 
-## Subscribe Observer
+## Subscribe Observer (Subscribe to a single notification channel)
 
 Create a notification channel (e.g 'Greetings'), subscribe then listen to events. 
 
@@ -60,6 +60,31 @@ Here's a breakdown of each part:
 `onDone`: This is a callback function that will be executed when the subscription is completed successfully. The `message` parameter represents any message related to the completion.
 
 `onError`: This is a callback function that will be executed if an error occurs during the subscription. The `error` parameter represents the error object.
+
+## Subscribe Observer (Subscribe to multiple notificaiton channels)
+```dart
+NotificationHub.instance.addSubscriber(this, notificationChannel: 'Morning', 
+onData: (event) {
+    print("$event");
+}, 
+onDone: (message) {
+    print("$message");
+}, 
+onError: (error) {
+    print(error.toString());
+});
+
+```dart
+NotificationHub.instance.addSubscriber(this, notificationChannel: 'Afternoon', 
+onData: (event) {
+    print("$event");
+}, 
+onDone: (message) {
+    print("$message");
+}, 
+onError: (error) {
+    print(error.toString());
+});
 
 ## Unsubscribe 
 
