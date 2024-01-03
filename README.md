@@ -16,7 +16,7 @@ and the Flutter guide for
 An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center.
 
 
-<img src="https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_pic.png" alt="Video Demo"  width="250" height="500"/>
+<img src="https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_pic.png" alt="Video Demo"  width="250px" height="500px"/>
 
 ![Video Demo](https://github.com/Abdullah8888/notification_hub/tree/main/resources/sample_pic.png)
 
