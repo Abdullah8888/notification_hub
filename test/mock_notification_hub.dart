@@ -44,7 +44,7 @@ class MockNotificationHub {
 
   bool isChannelExist({required String channelName}) {
     print("lal3 is ${notificationHub.hashCode}");
-    return notificationHub.isChannelExist(channelName: channelName);
+    return notificationHub.doesChannelExist(channelName: channelName);
   }
 
   void printAllSubscribers() {
@@ -57,7 +57,7 @@ class MockNotificationHub {
 
   void removeChannelName(
       {required String notificationName, required Object object}) {
-    notificationHub.removeChannelName(
+    notificationHub.removeSubsriberFromChannel(
         notificationName: notificationName, object: object);
   }
 

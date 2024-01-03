@@ -12,10 +12,13 @@ class NotificationHub {
     return _instance!;
   }
 
+  /// This will be used only in unit test.
   final StreamController _controller = StreamController.broadcast();
 
+  /// Subscribers associated with an object ID
   Map<int, StreamSubscription> _subscriberWithID = {};
 
+  /// Subscribers associated with a notification channel
   Map<String, Map<int, StreamSubscription>>
       _subscribersGroupedByNotificationChannel = {};
 
@@ -26,8 +29,10 @@ class NotificationHub {
     return NotificationHub._();
   }
 
-  /// `addSubscriber` is used to map an object id to a streamSubscription then
-  /// map the result to a notification channel.
+  /// The `addSubscriber` function is employed to associate an object ID with a StreamSubscription,
+  /// mapping the resulting information to a notification channel,
+  /// and subsequently initiating the listening process for an event.
+  ///
   /// final notificaionChannel = 'Greetings';
   /// ```dart
   ///  NotificationHub.instance.addSubscriber(this, notificationChannel: notificaionChannel,
@@ -43,7 +48,6 @@ class NotificationHub {
       Function? onError,
       void Function(String?)? onDone,
       bool? cancelOnError}) {
-    //StreamSubscription subscriber;
     StreamSubscription subscriber = _controller.stream.listen(
       (event) {
         if (currentNotificatonChannel == notificationName) {
@@ -93,6 +97,7 @@ class NotificationHub {
     }
   }
 
+  /// It is used to check if object has been mapped to a subscriber (i.e stream subscription)
   bool isObjectStored({required String channelName, required Object obj}) {
     if (_subscribersGroupedByNotificationChannel[channelName]?[obj.hashCode] !=
         null) {
@@ -101,7 +106,8 @@ class NotificationHub {
     return false;
   }
 
-  bool isChannelExist({required String channelName}) {
+  /// It is used to check if notification channel exist
+  bool doesChannelExist({required String channelName}) {
     if (_subscribersGroupedByNotificationChannel[channelName] != null) {
       return true;
     }
@@ -110,12 +116,13 @@ class NotificationHub {
 
   void printAllSubscribers() {}
 
+  /// This is used for posting events
   void post({required String notificatonChannel, dynamic data}) {
     currentNotificatonChannel = notificatonChannel;
     _controller.add(data);
   }
 
-  void removeChannelName(
+  void removeSubsriberFromChannel(
       {required String notificationName, required Object object}) {
     final subscribers =
         _subscribersGroupedByNotificationChannel[notificationName];
@@ -127,7 +134,16 @@ class NotificationHub {
     }
   }
 
-  void removeSubscriber({required Object object}) {
+  /// The `removeSubscriber` function is utilized to gracefully unsubscribe an object.
+  /// It disassociates the object from all notification channels if the list is empty
+  /// else, it specifically unsubscribes the object from the specified notification channels.
+  void removeSubscriber(
+      {required Object object, String notificationChannel = ''}) {
+    if (notificationChannel.isNotEmpty) {
+      removeSubsriberFromChannel(
+          notificationName: notificationChannel, object: object);
+      return;
+    }
     List<StreamSubscription> subscribersToBeRemove = [];
     for (int i = 0; i < _subscribersGroupedByNotificationChannel.length; i++) {
       final subscribers =
