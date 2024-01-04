@@ -28,8 +28,8 @@ There are three notification channels: `Mammals`, `Insects`, and `Birds`.
 - `Widget D` subscribes to both the Mammals and Birds notification channels.
 
 When a <b>Dog</b> is posted, `Widget A and D` will receive it.
-When 'Bees' are posted, `Widget B and C` will receive the notification.
-If an 'Owl' is posted, only `Widget D` will receive the notification.
+When <b>Bees</b> are posted, `Widget B and C` will receive the notification.
+If an <b>Owl</b> is posted, only `Widget D` will receive the notification.
 
 # Getting Started
 
