@@ -17,7 +17,7 @@ An event broadcasting mechanism designed for dispatching notifications to regist
 
 # Video demo showcasing its usage
 
-<img src="https://github.com/Abdullah8888/notification_hub/raw/main/sample_video.gif" alt="Video demo" style="width:250px;height:500px;"/>
+<img src="https://github.com/Abdullah8888/notification_hub/raw/main/sample_video.gif" alt="Video demo" style="width:130px;height:200px;"/>
 
 # Explanation
 There are three notification channels: `Mammals`, `Insects`, and `Birds`.
@@ -42,7 +42,7 @@ To use `notification_hub` in your Flutter project, add the following dependency 
 ```yaml
 dependencies:
   ...
-  notification_hub: ^0.0.6
+  notification_hub: ^0.0.7
 ```
 
 # Usage example
