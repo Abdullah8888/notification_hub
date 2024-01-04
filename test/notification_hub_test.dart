@@ -3,18 +3,17 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'mock_notification_hub.dart';
+import 'test_widgets/test_widget_a.dart';
 
 late String notificationName;
 late TestWidgetA obj;
 late StreamController controller;
 late StreamSubscription subscriber;
 void main() {
-  group('Register subscribers', () {
+  group('Map subscriber with an object ID to a notification channel', () {
     setUp(() {
-      notificationName = 'NotificationOne';
+      notificationName = 'ChannelOne';
       obj = const TestWidgetA();
-      controller = StreamController();
-      subscriber = controller.stream.listen((event) {});
     });
 
     tearDown(() {
@@ -22,9 +21,11 @@ void main() {
       MockNotificationHub.instance.close();
     });
 
-    test('Test should return true if object has been stored', () async {
+    test('Test should add a subscription with an objectID to a channel',
+        () async {
       MockNotificationHub.instance
-          .storeObject(notificationName, obj, subscriber);
+          .addSubscriber(obj, notificationName: notificationName);
+
       final isObjectStored = MockNotificationHub.instance
           .isObjectStored(channelName: notificationName, obj: obj);
 
@@ -34,18 +35,32 @@ void main() {
       expect(doesChannelExist, true);
     });
   });
-}
 
-class TestWidgetA extends StatefulWidget {
-  const TestWidgetA({super.key});
+  group('Remove subscriber', () {
+    setUp(() {
+      notificationName = 'ChannelOne';
+      obj = const TestWidgetA();
+    });
 
-  @override
-  State<TestWidgetA> createState() => _TestWidgetAState();
-}
+    tearDown(() {
+      MockNotificationHub.instance.close();
+    });
 
-class _TestWidgetAState extends State<TestWidgetA> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+    test('Test should remove subscriber', () async {
+      MockNotificationHub.instance
+          .addSubscriber(obj, notificationName: notificationName);
+
+      var isObjectStored = MockNotificationHub.instance
+          .isObjectStored(channelName: notificationName, obj: obj);
+
+      expect(isObjectStored, true); // Before removing the subscriber
+
+      MockNotificationHub.instance.removeSubscriber(object: obj);
+
+      isObjectStored = MockNotificationHub.instance
+          .isObjectStored(channelName: notificationName, obj: obj);
+
+      expect(isObjectStored, false); // After removing the subscriber
+    });
+  });
 }
