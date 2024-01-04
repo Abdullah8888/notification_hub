@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'mock_notification_hub.dart';
 import 'test_widgets/test_widget_a.dart';
