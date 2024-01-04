@@ -16,13 +16,13 @@ class MockNotificationHub {
   final notificationHub = NotificationHub.newInstance();
 
   void addSubscriber(Object obj,
-      {required String notificationName,
+      {required String notificationChannel,
       void Function(dynamic)? onData,
       Function? onError,
       void Function(String?)? onDone,
       bool? cancelOnError}) {
     notificationHub.addSubscriber(obj,
-        notificationName: notificationName,
+        notificationName: notificationChannel,
         onData: onData,
         onDone: onDone,
         onError: onError,
@@ -30,8 +30,8 @@ class MockNotificationHub {
   }
 
   void storeObject(
-      String notificationName, Object obj, StreamSubscription subscriber) {
-    notificationHub.storeObject(notificationName, obj, subscriber);
+      String notificationChannel, Object obj, StreamSubscription subscriber) {
+    notificationHub.storeObject(notificationChannel, obj, subscriber);
   }
 
   bool isObjectStored({required String channelName, required Object obj}) {
