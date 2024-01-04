@@ -17,7 +17,7 @@ An event broadcasting mechanism designed for dispatching notifications to regist
 
 # Video demo showcasing its usage
 
-<img src="https://github.com/Abdullah8888/notification_hub/raw/main/sample_video.gif" alt="Video demo" width="200" height="400"/>
+<img src="https://github.com/Abdullah8888/notification_hub/raw/main/sample_video.gif" alt="Video demo" width="230" height="400"/>
 
 # Explanation
 There are three notification channels: `Mammals`, `Insects`, and `Birds`.
