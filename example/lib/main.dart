@@ -6,7 +6,6 @@ import 'package:example/widget_b.dart';
 import 'package:example/widget_c.dart';
 import 'package:example/widget_d.dart';
 import 'package:flutter/material.dart';
-import 'package:notification_hub/notification_hub.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,25 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-    NotificationHub.instance.addSubscriber(this, notificationName: "channelOne",
-        onData: (event) {
-      print("event is $event");
-    }, onDone: (message) {
-      print("$message");
-    }, onError: (error) {
-      print("$error");
-    });
-  }
-
-  @override
-  void dispose() {
-    NotificationHub.instance.removeSubscriber(object: this);
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

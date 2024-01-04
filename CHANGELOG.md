@@ -1,3 +1,3 @@
-## 0.0.8
+## 0.0.9
 
 * Initial release of the notification_hub.
