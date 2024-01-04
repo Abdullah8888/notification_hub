@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'mock_notification_hub.dart';
+import 'notification_hub_wrapper.dart';
 import 'test_widgets/test_widget_a.dart';
 
 late String notificationChannel;
@@ -15,19 +15,19 @@ void main() {
     });
 
     tearDown(() {
-      MockNotificationHub.instance.removeSubscriber(object: obj);
-      MockNotificationHub.instance.close();
+      NotificationHubWrapper.instance.removeSubscriber(object: obj);
+      NotificationHubWrapper.instance.close();
     });
 
     test('Test should add a subscription with an objectID to a channel',
         () async {
-      MockNotificationHub.instance
+      NotificationHubWrapper.instance
           .addSubscriber(obj, notificationChannel: notificationChannel);
 
-      final isObjectStored = MockNotificationHub.instance
+      final isObjectStored = NotificationHubWrapper.instance
           .isObjectStored(channelName: notificationChannel, obj: obj);
 
-      final doesChannelExist = MockNotificationHub.instance
+      final doesChannelExist = NotificationHubWrapper.instance
           .doesChannelExist(channelName: notificationChannel);
       expect(isObjectStored, true);
       expect(doesChannelExist, true);
@@ -41,21 +41,21 @@ void main() {
     });
 
     tearDown(() {
-      MockNotificationHub.instance.close();
+      NotificationHubWrapper.instance.close();
     });
 
     test('Test should remove subscriber', () async {
-      MockNotificationHub.instance
+      NotificationHubWrapper.instance
           .addSubscriber(obj, notificationChannel: notificationChannel);
 
-      var isObjectStored = MockNotificationHub.instance
+      var isObjectStored = NotificationHubWrapper.instance
           .isObjectStored(channelName: notificationChannel, obj: obj);
 
       expect(isObjectStored, true); // Before removing the subscriber
 
-      MockNotificationHub.instance.removeSubscriber(object: obj);
+      NotificationHubWrapper.instance.removeSubscriber(object: obj);
 
-      isObjectStored = MockNotificationHub.instance
+      isObjectStored = NotificationHubWrapper.instance
           .isObjectStored(channelName: notificationChannel, obj: obj);
 
       expect(isObjectStored, false); // After removing the subscriber

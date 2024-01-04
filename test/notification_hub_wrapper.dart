@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:notification_hub/notification_hub.dart';
 
-class MockNotificationHub {
-  MockNotificationHub._();
+class NotificationHubWrapper {
+  NotificationHubWrapper._();
 
-  static MockNotificationHub? _instance;
+  static NotificationHubWrapper? _instance;
 
-  static MockNotificationHub get instance {
+  static NotificationHubWrapper get instance {
     _instance ??=
-        MockNotificationHub._(); // If instance is null, create a new one
+        NotificationHubWrapper._(); // If instance is null, create a new one
     return _instance!;
   }
 

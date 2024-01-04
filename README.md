@@ -13,7 +13,7 @@ and the Flutter guide for
 
 # notification_hub
 
-An event broadcasting mechanism designed for dispatching notifications to registered observers, inspired by the structure of the iOS Notification Center.
+An event broadcasting mechanism designed for dispatching notifications to registered subscribers, inspired by the structure of the iOS Notification Center.
 
 # Video demo showcasing its usage
 

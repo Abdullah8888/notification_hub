@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../mock_notification_hub.dart';
+import '../notification_hub_wrapper.dart';
 
 class TestWidgetA extends StatefulWidget {
   const TestWidgetA({super.key});
@@ -14,8 +13,7 @@ class _TestWidgetAState extends State<TestWidgetA> {
   @override
   void initState() {
     super.initState();
-    print("lalalala");
-    MockNotificationHub.instance.addSubscriber(this,
+    NotificationHubWrapper.instance.addSubscriber(this,
         notificationChannel: "ChannelOne", onData: (event) {
       setState(() {
         textContent = '$event';
@@ -38,7 +36,7 @@ class TestObjectOne {
   TestObjectOne(this.textContent);
 
   void start() {
-    MockNotificationHub.instance.addSubscriber(this,
+    NotificationHubWrapper.instance.addSubscriber(this,
         notificationChannel: "ChannelOne",
         onData: (event) {}, onDone: (message) {
       debugPrint("$message");
