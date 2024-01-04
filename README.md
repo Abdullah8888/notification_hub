@@ -19,6 +19,18 @@ An event broadcasting mechanism designed for dispatching notifications to regist
 
 <img src="https://github.com/Abdullah8888/notification_hub/blob/main/sample_video.gif" alt="drawing" style="width:250px;height:500px;"/>
 
+# Explanation
+There are three notification channels: `Mammals`, `Insects`, and `Birds`.
+
+- `Widget A` subscribes to the Mammals notification channel.
+- `Widget B` subscribes to the Insects notification channel.
+- `Widget C` subscribes to the Insects notification channel.
+- `Widget D` subscribes to both the Mammals and Birds notification channels.
+
+When a <b>Dog</b> is posted, `Widget A and D` will receive it.
+When 'Bees' are posted, `Widget B and C` will receive the notification.
+If an 'Owl' is posted, only `Widget D` will receive the notification.
+
 # Getting Started
 
 `notification_hub` is available through [pub.dev](https://pub.dev).
