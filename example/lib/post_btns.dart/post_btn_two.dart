@@ -13,15 +13,14 @@ class _PostButtonTwoState extends State<PostButtonTwo> {
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {
-          NotificationHub.instance
-              .post(notificatonChannel: "Birds", data: "Owl");
+          NotificationHub.instance.post(channel: "Insects", data: "Bees");
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
               Colors.blueAccent), // Set your desired background color
         ),
         child: const Text(
-          'Post Owl',
+          'Post Bees',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ));
   }

@@ -1,10 +1,9 @@
 import 'package:example/post_btns.dart/post_btn_one.dart';
-import 'package:example/post_btns.dart/post_btn_three.dart';
+import 'package:example/post_btns.dart/post_btn_two.dart';
 import 'package:example/post_btns.dart/post_btn_two.dart';
 import 'package:example/widget_a.dart';
 import 'package:example/widget_b.dart';
 import 'package:example/widget_c.dart';
-import 'package:example/widget_d.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      //navigatorObservers: [CustomNavigatorObserver()],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
@@ -54,30 +54,17 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                  width: 150.0, // Set your desired width
-                  height: 60.0,
-                  child: WidgetB()),
+              WidgetB(),
               SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                  width: 150.0, // Set your desired width
-                  height: 60.0,
-                  child: WidgetC()),
+              WidgetC(),
               SizedBox(
                 height: 20,
-              ),
-              SizedBox(
-                  width: 150.0, // Set your desired width
-                  height: 60.0,
-                  child: WidgetD()),
-              SizedBox(
-                height: 150,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [PostButtonOne(), PostButtonTwo(), PostButtonThree()],
+                children: [PostButtonOne(), PostButtonTwo()],
               )
             ],
           ),

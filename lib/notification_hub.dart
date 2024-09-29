@@ -1,165 +1,72 @@
-library notification_hub;
-
 import 'dart:async';
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
+import 'package:notification_hub/code_environment.dart';
 
 class NotificationHub {
-  NotificationHub._();
-
   static NotificationHub? _instance;
-
   static NotificationHub get instance {
-    _instance ??= NotificationHub._(); // If instance is null, create a new one
+    _instance = (CodeEnvironment.isRunningUnitTests)
+        ? NotificationHub._internal()
+        : _instance ??= NotificationHub._internal();
     return _instance!;
   }
 
-  /// This will be used only in unit test.
-  final StreamController _controller = StreamController.broadcast();
+  NotificationHub._internal();
 
-  /// Subscribers associated with an object ID
-  Map<int, StreamSubscription> _subscriberWithID = {};
+  final Map<String, StreamController> _channelControllers = {};
 
-  /// Subscribers associated with a notification channel
-  Map<String, Map<int, StreamSubscription>>
-      _subscribersGroupedByNotificationChannel = {};
-
-  String currentNotificatonChannel = '';
-
-  /// This will be used only in unit test.
-  factory NotificationHub.newInstance() {
-    return NotificationHub._();
-  }
-
-  /// The `addSubscriber` function is employed to associate an object ID with a StreamSubscription,
-  /// mapping the resulting information to a notification channel,
-  /// and subsequently initiating the listening process for an event.
-  ///
-  /// final notificaionChannel = 'Greetings';
-  /// ```dart
-  ///  NotificationHub.instance.addSubscriber(this, notificationChannel: notificaionChannel,
-  ///     onData: (event) {
-  ///   print("event is $event");
-  /// }, onDone: (message) {
-  ///   print("$message");
-  /// });
-  /// ```
-  void addSubscriber(Object obj,
-      {required String notificationName,
-      void Function(dynamic)? onData,
-      Function? onError,
-      void Function(String?)? onDone,
-      bool? cancelOnError}) {
-    StreamSubscription subscriber = _controller.stream.listen(
-      (event) {
-        if (currentNotificatonChannel == notificationName) {
-          onData!(event);
-        }
-      },
-      onDone: () {
-        if (currentNotificatonChannel == notificationName) {
-          onDone!(" ${obj.hashCode} subscriber successfully removed");
-        }
-      },
-      onError: (error) {
-        if (currentNotificatonChannel == notificationName) {
-          onError!(error);
-        }
-      },
-    );
-
-    storeObject(notificationName, obj, subscriber);
-  }
-
-  void storeObject(
-      String notificationName, Object obj, StreamSubscription subscriber) {
-    if (_subscribersGroupedByNotificationChannel
-        .containsKey(notificationName)) {
-      Map<int, StreamSubscription> streamSubscriberWithID =
-          _subscribersGroupedByNotificationChannel[notificationName]!;
-      streamSubscriberWithID = {
-        ...streamSubscriberWithID,
-        ...{obj.hashCode: subscriber}
-      };
-      _subscribersGroupedByNotificationChannel = {
-        ..._subscribersGroupedByNotificationChannel,
-        ...{notificationName: streamSubscriberWithID}
-      };
-    } else {
-      _subscriberWithID = {};
-      _subscriberWithID = {
-        ..._subscriberWithID,
-        ...{obj.hashCode: subscriber}
-      };
-
-      _subscribersGroupedByNotificationChannel = {
-        ..._subscribersGroupedByNotificationChannel,
-        ...{notificationName: _subscriberWithID}
-      };
+  /// Post a notification to a specific channel
+  void post({required String channel, dynamic data}) {
+    if (_channelControllers.containsKey(channel)) {
+      _channelControllers[channel]?.add(data);
     }
   }
 
-  /// It is used to check if object has been mapped to a subscriber (i.e stream subscription)
-  bool isObjectStored({required String channelName, required Object obj}) {
-    if (_subscribersGroupedByNotificationChannel[channelName]?[obj.hashCode] !=
-        null) {
-      return true;
+  /// Add a subscriber to a specific channel
+  StreamSubscription<dynamic> addSubscriber({
+    required String channel,
+    Function(dynamic)? onData,
+    Function? onError,
+    void Function()? onDone,
+  }) {
+    if (!_channelControllers.containsKey(channel)) {
+      _channelControllers[channel] = StreamController.broadcast();
     }
-    return false;
+    return _channelControllers[channel]!
+        .stream
+        .listen(onData, onError: onError, onDone: onDone);
   }
 
-  /// It is used to check if notification channel exist
-  bool doesChannelExist({required String channelName}) {
-    if (_subscribersGroupedByNotificationChannel[channelName] != null) {
-      return true;
-    }
-    return false;
+  bool doesChannelExist({required String channel}) {
+    return _channelControllers.containsKey(channel);
   }
 
-  void printAllSubscribers() {}
-
-  /// This is used for posting events
-  void post({required String notificatonChannel, dynamic data}) {
-    currentNotificatonChannel = notificatonChannel;
-    _controller.add(data);
+  /// Remove a specific subscriber (subscription)
+  void removeSubscriber({required StreamSubscription<dynamic> subscription}) {
+    subscription.cancel();
   }
 
-  void removeSubsriberFromChannel(
-      {required String notificationName, required Object object}) {
-    final subscribers =
-        _subscribersGroupedByNotificationChannel[notificationName];
-    if (subscribers == null || subscribers.isEmpty) {
-      _subscribersGroupedByNotificationChannel.remove(notificationName);
-    } else {
-      final subscriber = subscribers.remove(object.hashCode);
-      subscriber?.cancel();
-    }
-  }
-
-  /// The `removeSubscriber` function is utilized to gracefully unsubscribe an object.
-  /// It disassociates the object from all notification channels if the list is empty
-  /// else, it specifically unsubscribes the object from the specified notification channels.
-  void removeSubscriber(
-      {required Object object, String notificationChannel = ''}) {
-    if (notificationChannel.isNotEmpty) {
-      removeSubsriberFromChannel(
-          notificationName: notificationChannel, object: object);
+  /// Remove a channel
+  void removeChannel({required String channel}) {
+    if (!_channelControllers.containsKey(channel)) {
       return;
     }
-    List<StreamSubscription> subscribersToBeRemove = [];
-    for (int i = 0; i < _subscribersGroupedByNotificationChannel.length; i++) {
-      final subscribers =
-          _subscribersGroupedByNotificationChannel.values.toList()[i];
-      if (subscribers.containsKey(object.hashCode)) {
-        final subscriber = subscribers.remove(object.hashCode);
-        subscribersToBeRemove.add(subscriber!);
-      }
-    }
+    _channelControllers.remove(channel);
+  }
 
-    for (int i = 0; i < subscribersToBeRemove.length; i++) {
-      subscribersToBeRemove[i].cancel();
+  /// Remove all subscribers for a specific channel
+  void removeAllSubscribersFromChannel(String channel) {
+    if (_channelControllers.containsKey(channel)) {
+      _channelControllers[channel]?.close();
+      _channelControllers.remove(channel); // Remove the channel
     }
   }
 
-  void close() {
-    _controller.close();
+  /// Remove all subscribers across all channels
+  void removeAllSubscribers() {
+    _channelControllers.forEach((_, controller) => controller.close());
+    _channelControllers.clear();
   }
 }

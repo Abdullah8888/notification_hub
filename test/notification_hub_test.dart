@@ -1,64 +1,120 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'notification_hub_wrapper.dart';
-import 'test_widgets/test_widget_a.dart';
+import 'package:notification_hub/notification_hub.dart';
 
-late String notificationChannel;
-late TestWidgetA obj;
-late StreamController controller;
 late StreamSubscription subscriber;
+late NotificationHub notificationHub;
 void main() {
-  group('Map subscriber with an object ID to a notification channel', () {
+  group('Subscribe and receive posted notification', () {
     setUp(() {
-      notificationChannel = 'ChannelOne';
-      obj = const TestWidgetA();
+      notificationHub = NotificationHub.instance;
     });
 
     tearDown(() {
-      NotificationHubWrapper.instance.removeSubscriber(object: obj);
-      NotificationHubWrapper.instance.close();
+      notificationHub.removeSubscriber(
+          subscription: subscriber); // or subscriber.cancel();
     });
 
-    test('Test should add a subscription with an objectID to a channel',
-        () async {
-      NotificationHubWrapper.instance
-          .addSubscriber(obj, notificationChannel: notificationChannel);
-
-      final isObjectStored = NotificationHubWrapper.instance
-          .isObjectStored(channelName: notificationChannel, obj: obj);
-
-      final doesChannelExist = NotificationHubWrapper.instance
-          .doesChannelExist(channelName: notificationChannel);
-      expect(isObjectStored, true);
-      expect(doesChannelExist, true);
+    test('Should add a subscriber and receive posted notification', () async {
+      subscriber = notificationHub.addSubscriber(
+          channel: 'ChannelOne',
+          onData: (data) async {
+            expect(data, 10);
+          });
+      notificationHub.post(channel: 'ChannelOne', data: 10);
     });
   });
 
-  group('Remove subscriber', () {
+  group('Post to non existing channel', () {
     setUp(() {
-      notificationChannel = 'ChannelOne';
-      obj = const TestWidgetA();
+      notificationHub = NotificationHub.instance;
     });
 
     tearDown(() {
-      NotificationHubWrapper.instance.close();
+      notificationHub.removeSubscriber(
+          subscription: subscriber); // or subscriber.cancel();
     });
 
-    test('Test should remove subscriber', () async {
-      NotificationHubWrapper.instance
-          .addSubscriber(obj, notificationChannel: notificationChannel);
+    test('Should not receive notification for non-existent channel', () async {
+      // Adding a subscriber to a different channel
+      subscriber = notificationHub.addSubscriber(
+        channel: "AnotherChannel",
+        onData: (event) {
+          // This should not be called since we post to "NonExistentChannel"
+          fail("Received data from wrong channel");
+        },
+      );
 
-      var isObjectStored = NotificationHubWrapper.instance
-          .isObjectStored(channelName: notificationChannel, obj: obj);
+      // Posting a notification to a non-existent channel
+      notificationHub.post(channel: "NonExistentChannel", data: "Some data");
+    });
+  });
 
-      expect(isObjectStored, true); // Before removing the subscriber
+  group('Unsubscribe and stop receiving notifications', () {
+    setUp(() {
+      notificationHub = NotificationHub.instance;
+    });
 
-      NotificationHubWrapper.instance.removeSubscriber(object: obj);
+    tearDown(() {
+      notificationHub.removeSubscriber(
+          subscription: subscriber); // or subscriber.cancel();
+    });
 
-      isObjectStored = NotificationHubWrapper.instance
-          .isObjectStored(channelName: notificationChannel, obj: obj);
+    test('Should remove subscriber and stop receiving notifications', () async {
+      // Adding a subscriber to 'TestChannel' channel
+      subscriber = notificationHub.addSubscriber(
+        channel: "ChannelOne",
+        onData: (event) {
+          fail("Should not receive data after removal");
+        },
+        onError: (sad) {
+          fail("Should not receive data after removal2");
+        },
+        onDone: () {
+          fail("Should not receive data after removal3");
+        },
+      );
 
-      expect(isObjectStored, false); // After removing the subscriber
+      expect(true, notificationHub.doesChannelExist(channel: "ChannelOne"));
+
+      notificationHub.removeSubscriber(subscription: subscriber);
+
+      // Post a notification after the subscriber has been removed
+      notificationHub.post(channel: "ChannelOne", data: "Some data");
+    });
+
+    group('Unsubscribe and stop receiving notifications', () {
+      setUp(() {
+        notificationHub = NotificationHub.instance;
+      });
+
+      tearDown(() {
+        notificationHub.removeSubscriber(
+            subscription: subscriber); // or subscriber.cancel();
+      });
+
+      test('Should remove subscriber and stop receiving notifications',
+          () async {
+        // Adding a subscriber to 'TestChannel' channel
+        subscriber = notificationHub.addSubscriber(
+          channel: "ChannelOne",
+          onData: (event) {
+            fail("Should not receive data after removal");
+          },
+        );
+
+        expect(true, notificationHub.doesChannelExist(channel: "ChannelOne"));
+
+        // Remove subsriber
+        notificationHub.removeSubscriber(subscription: subscriber);
+
+        // Remove channel
+        notificationHub.removeChannel(channel: "ChannelOne");
+        expect(false, notificationHub.doesChannelExist(channel: "ChannelOne"));
+
+        // Post a notification after the subscriber has been removed
+        notificationHub.post(channel: "ChannelOne", data: "Some data");
+      });
     });
   });
 }
