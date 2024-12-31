@@ -22,6 +22,7 @@ class _WidgetAState extends State<WidgetA> {
       this,
       (data) {
         textContent = data;
+        setState(() {});
       },
     );
   }

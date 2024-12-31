@@ -22,6 +22,7 @@ class _WidgetCState extends State<WidgetC> {
       this,
       (data) {
         textContent = data;
+        setState(() {});
       },
     );
   }
@@ -89,7 +90,7 @@ class WidgetCC extends StatelessWidget {
 }
 
 class WidgetChangeNotifierC with ChangeNotifier {
-  late String? _textContent;
+  String? _textContent;
   String? get textContent => _textContent;
   late StreamSubscription subscriptionToInsectsChannel;
 

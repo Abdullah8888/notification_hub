@@ -22,6 +22,7 @@ class _WidgetBState extends State<WidgetB> {
       this,
       (data) {
         textContent = data;
+        setState(() {});
       },
     );
 
@@ -30,13 +31,13 @@ class _WidgetBState extends State<WidgetB> {
       this,
       (data) {
         textContent = data;
+        setState(() {});
       },
     );
   }
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
     NotificationHub.instance.removeSubscriptions(this);
     super.dispose();
   }
