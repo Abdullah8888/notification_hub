@@ -54,15 +54,9 @@ For a detailed usage example, check the [example folder](https://github.com/Abdu
 Create a notification channel (e.g 'Greetings'), subscribe then listen to events. 
 
 ```dart
-NotificationHub.instance.addSubscriber(this, notificationChannel: 'Greetings', 
+NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Greetings', 
 onData: (event) {
-    print("$event");
-}, 
-onDone: (message) {
-    print("$message");
-}, 
-onError: (error) {
-    print(error.toString());
+    debugPrint("$event");
 });
 ```
 Here's a breakdown of each part:
@@ -79,28 +73,16 @@ Here's a breakdown of each part:
 
 ## Subscribe Observer (Subscribe to multiple notificaiton channels)
 ```dart
-NotificationHub.instance.addSubscriber(this, notificationChannel: 'Morning', 
+NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Morning', 
 onData: (event) {
-    print("$event");
-}, 
-onDone: (message) {
-    print("$message");
-}, 
-onError: (error) {
-    print(error.toString());
+    debugPrint("$event");
 });
 ```
 
 ```dart
-NotificationHub.instance.addSubscriber(this, notificationChannel: 'Afternoon', 
+NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Afternoon', 
 onData: (event) {
-    print("$event");
-}, 
-onDone: (message) {
-    print("$message");
-}, 
-onError: (error) {
-    print(error.toString());
+    debugPrint("$event");
 });
 ```
 
