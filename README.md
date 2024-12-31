@@ -61,7 +61,7 @@ onData: (data) {
 ```
 Here's a breakdown of each part:
 
-`addSubscriber`: This method is likely used to subscribe an object (in this case, the current object, represented by `this`) to a specific notification channel. The `this` can also be replaced by an instance of an object.
+`addSubscriber`: This method is used to subscribe an object (in this case, the current object, represented by `this`) to a specific notification channel. The `this` can also be replaced by an instance of an object.
 
 `notificationChannel`: **'Greetings'** Specifies the name of the notification channel to which the object is subscribing. In this case, it's **'Greetings'**.
 
@@ -85,7 +85,7 @@ onData: (data) {
 
 ## Unsubscribe 
 
-Unsubscribe by caling `removeSubscriber`. You can also unsubscribe from a specified notification channel, assuming the object or widget has subscribed to more than one notification channels.
+Unsubscribe by caling `removeSubscriber`.
 
 
 <h6> Unsubscribe from All notification channels </h6>
