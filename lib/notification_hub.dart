@@ -27,12 +27,9 @@ class NotificationHub {
       {}; // Subscriptions map
 
   // Add observer to a channel
-  void addObserver<T>(
-    String channelName,
-    Object widget,
-    void Function(T) callback,
-  ) {
-    final widgetId = '${widget.runtimeType}_${widget.hashCode}';
+  void addSubscriber<T>(String channelName, Object object,
+      {void Function(T)? onData}) {
+    final widgetId = '${object.runtimeType}_${object.hashCode}';
     debugPrint('widgetId in addObserver is $widgetId');
     // Create a new StreamController if none exists for the channel
     final controller = _channels
@@ -44,7 +41,7 @@ class NotificationHub {
 
     // Listen for the notification
     final subscription = controller.stream.listen((data) {
-      callback(data);
+      onData?.call(data);
     });
 
     // Track the subscription for the widget using widgetId
@@ -52,9 +49,9 @@ class NotificationHub {
   }
 
   // Post a notification to a channel
-  void post<T>({required String channelName, required T data}) {
+  void post<T>({required String notificationChannel, required T data}) {
     // Check if there are listeners for the channel
-    final controllers = _channels[channelName];
+    final controllers = _channels[notificationChannel];
     if (controllers != null && controllers.isNotEmpty) {
       for (var controller in controllers) {
         // Only add data to the stream once per post
@@ -66,8 +63,8 @@ class NotificationHub {
   }
 
   // Remove a widget's subscriptions when it is disposed
-  void removeSubscriptions(Object widget) {
-    final widgetId = '${widget.runtimeType}_${widget.hashCode}';
+  void removeSubscriber({required Object object}) {
+    final widgetId = '${object.runtimeType}_${object.hashCode}';
     debugPrint('widgetId in addObserver is $widgetId');
     final subscriptions = this.subscriptions[widgetId];
     if (subscriptions != null) {
@@ -78,29 +75,14 @@ class NotificationHub {
     }
   }
 
-  // This is used in unit testing
-  // bool? doesSubscriptionExit(Object widget) {
-  //   debugPrint(" matchingKeys.isEmpty1  is ${widget.runtimeType.toString()}");
-  //   debugPrint(" matchingKeys.isEmpty 2 is ${widget.toString()}");
-  //   List<String>? matchingKeys = subscriptions.keys
-  //       .where((key) => key.contains(widget.toString()))
-  //       .toList();
-  //   debugPrint(" matchingKeys.isEmpty  is ${matchingKeys.isEmpty}");
-  //   return matchingKeys.isEmpty ? false : true;
-  // }
-
-  // bool doesSubscriptionExist() {
-
-  // }
-
   // Remove all subscriptions for a specific channel
-  void removeChannel(String channelName) {
-    final controllers = _channels[channelName];
+  void removeChannel({required String notificationChannel}) {
+    final controllers = _channels[notificationChannel];
     if (controllers != null) {
       for (var controller in controllers) {
         controller.close();
       }
-      _channels.remove(channelName);
+      _channels.remove(notificationChannel);
     }
   }
 }

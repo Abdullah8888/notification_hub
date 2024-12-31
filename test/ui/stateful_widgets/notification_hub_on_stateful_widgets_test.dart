@@ -31,7 +31,7 @@ void main() {
       expect(check, true);
       // Post notification to "ChannelA" and verify widget receives it
       NotificationHub.instance
-          .post<String>(channelName: 'ChannelA', data: 'Test Data');
+          .post<String>(notificationChannel: 'ChannelA', data: 'Test Data');
     });
 
     testWidgets('should stop receive data when popped out',
@@ -60,7 +60,7 @@ void main() {
 
       // Post notification to "ChannelA" and verify widget receives it
       NotificationHub.instance
-          .post<String>(channelName: 'ChannelA', data: 'Test Data');
+          .post<String>(notificationChannel: 'ChannelA', data: 'Test Data');
 
       final check = NotificationHub.instance.doesSubscriptionExit('SampleA');
       expect(check, false);
@@ -110,7 +110,7 @@ void main() {
 
       // Act (Post notification to "ChannelA")
       NotificationHub.instance
-          .post<String>(channelName: 'ChannelA', data: 'Test Data');
+          .post<String>(notificationChannel: 'ChannelA', data: 'Test Data');
 
       // Wait to ensure callbacks are executed
       await tester.pumpAndSettle();

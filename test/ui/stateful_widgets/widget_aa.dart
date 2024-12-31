@@ -21,10 +21,10 @@ class _SampleAState extends State<SampleA> {
   void initState() {
     super.initState();
 
-    NotificationHub.instance.addObserver<String>(
+    NotificationHub.instance.addSubscriber<String>(
       "ChannelA",
       this,
-      (data) {
+      onData: (data) {
         widget.callback?.call(data);
       },
     );
@@ -32,7 +32,7 @@ class _SampleAState extends State<SampleA> {
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriber(object: this);
     super.dispose();
   }
 }
@@ -57,10 +57,10 @@ class _SampleBState extends State<SampleB> {
   void initState() {
     super.initState();
 
-    NotificationHub.instance.addObserver<String>(
+    NotificationHub.instance.addSubscriber<String>(
       "ChannelA",
       this,
-      (data) {
+      onData: (data) {
         widget.callback?.call(data);
       },
     );
@@ -68,7 +68,7 @@ class _SampleBState extends State<SampleB> {
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriber(object: this);
     super.dispose();
   }
 }

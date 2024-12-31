@@ -17,10 +17,10 @@ class _WidgetCState extends State<WidgetC> {
   @override
   void initState() {
     super.initState();
-    NotificationHub.instance.addObserver<String>(
+    NotificationHub.instance.addSubscriber<String>(
       "Insects",
       this,
-      (data) {
+      onData: (data) {
         textContent = data;
         setState(() {});
       },
@@ -29,7 +29,7 @@ class _WidgetCState extends State<WidgetC> {
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriber(object: this);
     super.dispose();
   }
 
@@ -101,10 +101,10 @@ class WidgetChangeNotifierC with ChangeNotifier {
 
   WidgetChangeNotifierC() {
     debugPrint('object');
-    NotificationHub.instance.addObserver<String>(
+    NotificationHub.instance.addSubscriber<String>(
       "Insects",
       this,
-      (data) {
+      onData: (data) {
         textContent = data;
       },
     );
@@ -112,7 +112,7 @@ class WidgetChangeNotifierC with ChangeNotifier {
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriber(object: this);
     super.dispose();
   }
 }

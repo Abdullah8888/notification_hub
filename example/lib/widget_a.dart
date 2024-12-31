@@ -17,10 +17,10 @@ class _WidgetAState extends State<WidgetA> {
   void initState() {
     super.initState();
 
-    NotificationHub.instance.addObserver<String>(
+    NotificationHub.instance.addSubscriber<String>(
       "Mammals",
       this,
-      (data) {
+      onData: (data) {
         textContent = data;
         setState(() {});
       },
@@ -29,7 +29,7 @@ class _WidgetAState extends State<WidgetA> {
 
   @override
   void dispose() {
-    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriber(object: this);
     super.dispose();
   }
 

@@ -6,13 +6,13 @@ import 'notification_hub_extension.dart';
 
 late NotificationHub notificationHub;
 void main() {
-  group('NotificationHub3', () {
+  group('NotificationHub', () {
     setUp(() {
       notificationHub = NotificationHub.instance;
     });
 
     tearDown(() {
-      notificationHub.removeSubscriptions('Observer1');
+      notificationHub.removeSubscriber(object: 'Observer1');
       final check = notificationHub.doesSubscriptionExit("Observer1");
       expect(check, false);
     });
@@ -26,14 +26,17 @@ void main() {
       }
 
       // Add an observer to "ChannelA"
-      notificationHub.addObserver<String>(
+      notificationHub.addSubscriber<String>(
         'ChannelA',
         'Observer1', // Unique identifier for this observer
-        observerCallback,
+        onData: (data) {
+          observerCallback.call(data);
+        },
       );
 
       // Act
-      notificationHub.post<String>(channelName: 'ChannelA', data: 'Test Data');
+      notificationHub.post<String>(
+          notificationChannel: 'ChannelA', data: 'Test Data');
 
       // Assert
       await expectLater(
