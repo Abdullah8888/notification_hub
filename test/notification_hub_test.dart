@@ -47,5 +47,68 @@ void main() {
         throw TimeoutException('Test timed out while waiting for notification');
       });
     });
+
+    // test('Should remove specific subscriptions for an object from a channel',
+    //     () {
+    //   final notificationHub = NotificationHub.instance;
+
+    //   // Add subscribers
+    //   notificationHub.addSubscriber<String>(
+    //     object: 'Object1',
+    //     notificationChannel: "ChannelA",
+    //     onData: (data) {
+    //       // Handle data
+    //     },
+    //   );
+
+    //   notificationHub.addSubscriber<String>(
+    //     object: 'Object1',
+    //     notificationChannel: "ChannelB",
+    //     onData: (data) {
+    //       // Handle data
+    //     },
+    //   );
+
+    //   // Verify subscriptions exist
+    //   expect(notificationHub.subscriptions.length, 1);
+    //   expect(notificationHub.channels["ChannelA"]?.length, 1);
+    //   expect(notificationHub.channels["ChannelB"]?.length, 1);
+
+    //   // Remove from ChannelA
+    //   notificationHub.removeSubscriberFromChannel2(
+    //     object: 'Object1',
+    //     notificationChannel: "ChannelA",
+    //   );
+
+    //   // Verify ChannelA is unsubscribed but ChannelB remains
+    //   // expect(notificationHub.channels.containsKey("ChannelA"), false);
+    //   // expect(notificationHub.channels.containsKey("ChannelB"), true);
+    // });
+
+    test('Should remove specific subscriptions for an object from a channel',
+        () {
+      final notificationHub = NotificationHub.instance;
+
+      // Add subscribers
+      notificationHub.addSubscriber<String>(
+        object: 'Object1',
+        notificationChannel: "ChannelA",
+        onData: (data) {
+          // Handle data
+        },
+      );
+
+      notificationHub.addSubscriber<String>(
+        object: 'Object2',
+        notificationChannel: "ChannelA",
+        onData: (data) {
+          // Handle data
+        },
+      );
+
+      notificationHub.removeSubscriber(object: 'Object1');
+      final check = notificationHub.doesSubscriptionExit("Object1");
+      expect(check, false);
+    });
   });
 }

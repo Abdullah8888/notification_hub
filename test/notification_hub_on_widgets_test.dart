@@ -117,7 +117,7 @@ void main() {
     });
 
     testWidgets(
-        'SampleA, SampleB, and SampleC should receive the same data when notification is posted',
+        'SampleC should receive the same data when notification is posted',
         (WidgetTester tester) async {
       //final completer = Completer<void>();
 

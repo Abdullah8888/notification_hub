@@ -42,7 +42,7 @@ To use `notification_hub` in your Flutter project, add the following dependency 
 ```yaml
 dependencies:
   ...
-  notification_hub: ^0.0.9
+  notification_hub: ^1.0.1
 ```
 
 # Usage example
@@ -55,8 +55,8 @@ Create a notification channel (e.g 'Greetings'), subscribe then listen to events
 
 ```dart
 NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Greetings', 
-onData: (event) {
-    debugPrint("$event");
+onData: (data) {
+    debugPrint("$data");
 });
 ```
 Here's a breakdown of each part:
@@ -65,24 +65,21 @@ Here's a breakdown of each part:
 
 `notificationChannel`: **'Greetings'** Specifies the name of the notification channel to which the object is subscribing. In this case, it's **'Greetings'**.
 
-`onData`: This is a callback function that will be executed when new data is received on the 'Greetings' channel. The `event` parameter represents the data received.
+`onData`: This is a callback function that will be executed when new data is received on the 'Greetings' channel. The `data` parameter represents the data received.
 
-`onDone`: This is a callback function that will be executed when the subscription is completed successfully. The `message` parameter represents any message related to the completion.
-
-`onError`: This is a callback function that will be executed if an error occurs during the subscription. The `error` parameter represents the error object.
 
 ## Subscribe Observer (Subscribe to multiple notificaiton channels)
 ```dart
 NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Morning', 
-onData: (event) {
-    debugPrint("$event");
+onData: (data) {
+    debugPrint("$data");
 });
 ```
 
 ```dart
 NotificationHub.instance.addSubscriber(object: this, notificationChannel: 'Afternoon', 
-onData: (event) {
-    debugPrint("$event");
+onData: (data) {
+    debugPrint("$data");
 });
 ```
 
@@ -95,12 +92,6 @@ Unsubscribe by caling `removeSubscriber`. You can also unsubscribe from a specif
 
 ```dart
 NotificationHub.instance.removeSubscriber(object: this);
-```
-
-<h6> Unsubscribe from a specified notification channel </h6>
-
-```dart
-NotificationHub.instance.removeSubscriber(object: this, notificationChannel: 'Greetings');
 ```
 
 ## Post notification
