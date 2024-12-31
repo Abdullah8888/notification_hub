@@ -42,7 +42,7 @@ To use `notification_hub` in your Flutter project, add the following dependency 
 ```yaml
 dependencies:
   ...
-  notification_hub: ^1.0.1
+  notification_hub: ^1.0.2
 ```
 
 # Usage example
