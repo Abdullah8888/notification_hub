@@ -18,8 +18,8 @@ class _WidgetCState extends State<WidgetC> {
   void initState() {
     super.initState();
     NotificationHub.instance.addSubscriber<String>(
-      "Insects",
-      this,
+      notificationChannel: "Insects",
+      object: this,
       onData: (data) {
         textContent = data;
         setState(() {});
@@ -92,7 +92,6 @@ class WidgetCC extends StatelessWidget {
 class WidgetChangeNotifierC with ChangeNotifier {
   String? _textContent;
   String? get textContent => _textContent;
-  late StreamSubscription subscriptionToInsectsChannel;
 
   set textContent(String? value) {
     _textContent = value;
@@ -102,8 +101,8 @@ class WidgetChangeNotifierC with ChangeNotifier {
   WidgetChangeNotifierC() {
     debugPrint('object');
     NotificationHub.instance.addSubscriber<String>(
-      "Insects",
-      this,
+      notificationChannel: "Insects",
+      object: this,
       onData: (data) {
         textContent = data;
       },

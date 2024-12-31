@@ -27,14 +27,16 @@ class NotificationHub {
       {}; // Subscriptions map
 
   // Add observer to a channel
-  void addSubscriber<T>(String channelName, Object object,
-      {void Function(T)? onData}) {
+  void addSubscriber<T>(
+      {required Object object,
+      required String notificationChannel,
+      void Function(T)? onData}) {
     final widgetId = '${object.runtimeType}_${object.hashCode}';
     debugPrint('widgetId in addObserver is $widgetId');
     // Create a new StreamController if none exists for the channel
     final controller = _channels
         .putIfAbsent(
-          channelName,
+          notificationChannel,
           () => [StreamController<T>.broadcast()],
         )
         .first;

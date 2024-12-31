@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notification_hub/notification_hub.dart';
 
-import '../../notification_hub_extension.dart';
-import 'widget_aa.dart';
+import 'notification_hub_extension.dart';
+import 'sample_widgets.dart';
 
 void main() {
   group('Notification Hub on Stateful Widgets', () {
@@ -114,6 +114,62 @@ void main() {
 
       // Wait to ensure callbacks are executed
       await tester.pumpAndSettle();
+    });
+
+    testWidgets(
+        'SampleA, SampleB, and SampleC should receive the same data when notification is posted',
+        (WidgetTester tester) async {
+      //final completer = Completer<void>();
+
+      // Arrange (Pump the widgets into the widget tree)
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SampleC(
+                    callback: (data) {
+                      //expect(data, 'Test Data');
+                    },
+                  ), // Add SampleC
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Wait for initState and addObserver to complete
+      await tester.pumpAndSettle();
+
+      // Assert that subscriptions exist
+
+      final sampleCCheck = NotificationHub.instance
+          .doesSubscriptionExit('SampleCChangeNotifier');
+
+      expect(sampleCCheck, true);
+
+      // Act (Post notification to "ChannelA")
+      NotificationHub.instance.post<String>(
+        notificationChannel: 'ChannelA',
+        data: 'Test Data',
+      );
+
+      // Wait to ensure callbacks are executed and UI is updated
+      await tester.pumpAndSettle();
+
+      // Verify the content of the Text widget in SampleC
+      final sampleCTextWidgetFinder = find.descendant(
+        of: find.byType(SampleC),
+        matching: find.byType(Text),
+      );
+
+      expect(sampleCTextWidgetFinder, findsOneWidget);
+
+      final textWidget = tester.widget<Text>(sampleCTextWidgetFinder);
+      expect(textWidget.data, 'Test Data');
     });
   });
 }

@@ -27,8 +27,8 @@ void main() {
 
       // Add an observer to "ChannelA"
       notificationHub.addSubscriber<String>(
-        'ChannelA',
-        'Observer1', // Unique identifier for this observer
+        notificationChannel: 'ChannelA',
+        object: 'Observer1', // Unique identifier for this observer
         onData: (data) {
           observerCallback.call(data);
         },

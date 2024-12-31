@@ -18,8 +18,8 @@ class _WidgetBState extends State<WidgetB> {
     super.initState();
 
     NotificationHub.instance.addSubscriber<String>(
-      "Mammals",
-      this,
+      notificationChannel: "Mammals",
+      object: this,
       onData: (data) {
         textContent = data;
         setState(() {});
@@ -27,8 +27,8 @@ class _WidgetBState extends State<WidgetB> {
     );
 
     NotificationHub.instance.addSubscriber<String>(
-      "Insetcs",
-      this,
+      notificationChannel: "Insetcs",
+      object: this,
       onData: (data) {
         textContent = data;
         setState(() {});
