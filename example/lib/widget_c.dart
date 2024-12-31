@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:notification_hub/notification_hub.dart';
+import 'package:provider/provider.dart';
 
 class WidgetC extends StatefulWidget {
   const WidgetC({super.key});
@@ -12,29 +13,22 @@ class WidgetC extends StatefulWidget {
 
 class _WidgetCState extends State<WidgetC> {
   late String textContent = '';
-  late StreamSubscription subscriptionToInsectsChannel;
+
   @override
   void initState() {
     super.initState();
-    subscriptionToInsectsChannel = NotificationHub.instance.addSubscriber(
-        channel: "Insects",
-        onData: (event) {
-          setState(() {
-            textContent = '$event';
-          });
-        },
-        onDone: () {
-          debugPrint("done");
-        },
-        onError: (error) {
-          debugPrint(error.toString());
-        });
+    NotificationHub.instance.addObserver<String>(
+      "Insects",
+      this,
+      (data) {
+        textContent = data;
+      },
+    );
   }
 
   @override
   void dispose() {
-    NotificationHub.instance
-        .removeSubscriber(subscription: subscriptionToInsectsChannel);
+    NotificationHub.instance.removeSubscriptions(this);
     super.dispose();
   }
 
@@ -57,5 +51,67 @@ class _WidgetCState extends State<WidgetC> {
                 color: Colors.black, fontWeight: FontWeight.w800),
           ),
         ));
+  }
+}
+
+class WidgetCC extends StatelessWidget {
+  const WidgetCC({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => WidgetChangeNotifierC(),
+      child: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Consumer<WidgetChangeNotifierC>(builder: (context, counter, child) {
+      return Container(
+          width: 150.0,
+          //height: 60.0,
+          padding: const EdgeInsets.only(left: 5, bottom: 10, right: 5, top: 5),
+          decoration: BoxDecoration(
+            color: Colors.greenAccent,
+            borderRadius:
+                BorderRadius.circular(25.0), // Adjust the radius as needed
+          ),
+          child: Center(
+            child: Text(
+              'Widget C subscribes to Insects channel \n\n Will recieve ->  ${context.read<WidgetChangeNotifierC>().textContent}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w800),
+            ),
+          ));
+    });
+  }
+}
+
+class WidgetChangeNotifierC with ChangeNotifier {
+  late String? _textContent;
+  String? get textContent => _textContent;
+  late StreamSubscription subscriptionToInsectsChannel;
+
+  set textContent(String? value) {
+    _textContent = value;
+    notifyListeners();
+  }
+
+  WidgetChangeNotifierC() {
+    debugPrint('object');
+    NotificationHub.instance.addObserver<String>(
+      "Insects",
+      this,
+      (data) {
+        textContent = data;
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    NotificationHub.instance.removeSubscriptions(this);
+    super.dispose();
   }
 }

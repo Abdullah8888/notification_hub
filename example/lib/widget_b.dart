@@ -12,48 +12,32 @@ class WidgetB extends StatefulWidget {
 
 class _WidgetBState extends State<WidgetB> {
   late String textContent = '';
-  late StreamSubscription subscriptionToMammalsChannel;
-  late StreamSubscription subscriptionToInsectsChannel;
 
   @override
   void initState() {
     super.initState();
 
-    subscriptionToMammalsChannel = NotificationHub.instance.addSubscriber(
-        channel: "Mammals",
-        onData: (event) {
-          setState(() {
-            textContent = '$event';
-          });
-        },
-        onDone: () {
-          debugPrint("done");
-        },
-        onError: (error) {
-          debugPrint(error.toString());
-        });
+    NotificationHub.instance.addObserver<String>(
+      "Mammals",
+      this,
+      (data) {
+        textContent = data;
+      },
+    );
 
-    subscriptionToInsectsChannel = NotificationHub.instance.addSubscriber(
-        channel: "Insects",
-        onData: (event) {
-          setState(() {
-            textContent = '$event';
-          });
-        },
-        onDone: () {
-          debugPrint("done");
-        },
-        onError: (error) {
-          debugPrint(error.toString());
-        });
+    NotificationHub.instance.addObserver<String>(
+      "Insetcs",
+      this,
+      (data) {
+        textContent = data;
+      },
+    );
   }
 
   @override
   void dispose() {
-    NotificationHub.instance
-        .removeSubscriber(subscription: subscriptionToMammalsChannel);
-    NotificationHub.instance
-        .removeSubscriber(subscription: subscriptionToInsectsChannel);
+    NotificationHub.instance.removeSubscriptions(this);
+    NotificationHub.instance.removeSubscriptions(this);
     super.dispose();
   }
 

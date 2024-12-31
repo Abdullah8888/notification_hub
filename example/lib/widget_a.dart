@@ -12,30 +12,23 @@ class WidgetA extends StatefulWidget {
 
 class _WidgetAState extends State<WidgetA> {
   late String textContent = '';
-  late StreamSubscription subscriptionToMammalsChannel;
+
   @override
   void initState() {
     super.initState();
-    subscriptionToMammalsChannel = NotificationHub.instance.addSubscriber(
-        channel: "Mammals",
-        onData: (event) {
-          print('pop');
-          setState(() {
-            textContent = '$event';
-          });
-        },
-        onDone: () {
-          debugPrint("done");
-        },
-        onError: (error) {
-          debugPrint(error.toString());
-        });
+
+    NotificationHub.instance.addObserver<String>(
+      "Mammals",
+      this,
+      (data) {
+        textContent = data;
+      },
+    );
   }
 
   @override
   void dispose() {
-    NotificationHub.instance
-        .removeSubscriber(subscription: subscriptionToMammalsChannel);
+    NotificationHub.instance.removeSubscriptions(this);
     super.dispose();
   }
 
