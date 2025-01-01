@@ -77,7 +77,7 @@ class NotificationHub {
   }
 
   // Post a notification to a channel
-  void post<T>({required String notificationChannel, required T data}) {
+  void post<T>({required String notificationChannel, T? data}) {
     // Check if there are listeners for the channel
     final controllers = channels[notificationChannel];
     if (controllers != null && controllers.isNotEmpty) {
